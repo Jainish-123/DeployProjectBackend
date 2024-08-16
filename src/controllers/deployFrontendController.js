@@ -6,13 +6,12 @@ const {
   getEc2PublicDnsImdsV2,
 } = require("../util/util");
 
-const deployBackend = async (req, res) => {
-  const { repoUrl, baseDir, environment, runCommand } = req.body;
+const deployFrontend = async (req, res) => {
+  const { repoUrl, baseDir, environment } = req.body;
 
-  if (!repoUrl || !baseDir || !environment || !runCommand) {
+  if (!repoUrl || !baseDir || !environment) {
     return res.status(400).json({
-      error:
-        "Missing required parameters: repoUrl, baseDir, environment or runCommand.",
+      error: "Missing required parameters: repoUrl, baseDir or environment.",
     });
   }
   const repoName = generateRepoName(repoUrl);
@@ -20,7 +19,7 @@ const deployBackend = async (req, res) => {
   const dockerScriptPath = path.join(
     __dirname,
     "..",
-    "create_backend_docker_container.sh"
+    "create_frontend_docker_container.sh"
   );
 
   const clonedReposDir = createClonedReposDirIfNotExists();
@@ -54,4 +53,4 @@ const deployBackend = async (req, res) => {
   }
 };
 
-module.exports = { deployBackend };
+module.exports = { deployFrontend };
